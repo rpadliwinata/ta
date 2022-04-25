@@ -37,6 +37,7 @@ if r.status_code == 200:
 # membuka file tesseract untuk libary pytesseract
 pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
 
+# membaca image yang tadi disimpan
 img = cv2.imread("../image.jpg")
 # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 # ret, thresh1 = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY)
@@ -47,12 +48,16 @@ img = cv2.imread("../image.jpg")
 # x, y, w, h = cv2.boundingRect(contours[0])
 # rect = cv2.rectangle(im2, (x, y), (x + w, y + h), (0, 255, 0), 2)
 # cropped = im2[y:y + h, x:x + w]
+
+# preprocessing image
 ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 #cropped = th1
 
+# melakukan OCR pada image
 captcha = pytesseract.image_to_string(th1)
 captcha = captcha.strip()
 
+# untuk login pada link onion
 data = {
     "username": "tugasakhir",
     "password": "tugasakhir",
@@ -62,6 +67,7 @@ data = {
 res = session.post(
     "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
 
+# untuk cek captcha yang digambar sesuai dengan captcha yang dibaca
 print(captcha)
 cookies = session.cookies.get_dict()
 print(cookies)
