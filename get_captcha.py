@@ -16,12 +16,6 @@ headers = {'User-Agent': user_agent}
 
 session = requests.Session()
 session.proxies = proxies
-# res = session.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/captcha.php", headers=headers)
-
-# res = requests.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php")
-# soup = BS(res.content, 'html.parser')
-# image = soup.find('img')
-# print(res)
 
 r = session.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/captcha.php",
                 stream=True, headers=headers)
@@ -63,6 +57,6 @@ data = {
 res = session.post(
     "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
 
-print(captcha)
 cookies = session.cookies.get_dict()
-print(cookies)
+
+
