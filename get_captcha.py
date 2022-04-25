@@ -1,14 +1,14 @@
-import requests
-import cv2
-import pytesseract
-import shutil
 from fake_useragent import UserAgent
+import shutil
+import pytesseract
+import cv2
+import requests
 
 ua = UserAgent()
 
 proxies = {
     'http': 'socks5h://localhost:9050',
-    "https":'socks5h://localhost:9050'
+    "https": 'socks5h://localhost:9050'
 }
 
 user_agent = ua.random
@@ -23,7 +23,8 @@ session.proxies = proxies
 # image = soup.find('img')
 # print(res)
 
-r = session.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/captcha.php", stream=True, headers=headers)
+r = session.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/captcha.php",
+                stream=True, headers=headers)
 if r.status_code == 200:
     with open("/image.jpg", 'wb') as f:
         r.raw.decode_content = True
@@ -36,7 +37,8 @@ img = cv2.imread("../image.jpg")
 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
+ret, thresh1 = cv2.threshold(
+    gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
 
 rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 18))
 
@@ -62,7 +64,8 @@ data = {
     "captcha": captcha
 }
 
-res = session.post("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+res = session.post(
+    "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
 
 print(res.text)
 print(captcha)
