@@ -49,8 +49,7 @@ for x in range(limit):
         "captcha": captcha
     }
 
-    res = session.post(
-        "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+    res = session.post(links[x], data=data, headers=headers)
 
     cookie = session.cookies.get_dict()
     for val in cookie.values():
@@ -58,6 +57,6 @@ for x in range(limit):
 
 with open("cookies_list.txt", "w") as file:
     for cookie in cookies:
-        file.write(cookie)
+        file.writelines(cookie)
 
 
