@@ -64,5 +64,6 @@ data = {
 
 res = session.post("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
 
-print(res.text)
 print(captcha)
+cookies = session.cookies.get_dict()
+print(cookies)
