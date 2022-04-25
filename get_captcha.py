@@ -27,7 +27,7 @@ cookies = []
 
 for x in range(limit):
     # untuk bikin request ke link onion
-    r = session.get(links[x], stream=True, headers=headers)  # stream true itu biar gambar kebaca
+    r = session.get(f"{links[x]}/captcha.php", stream=True, headers=headers)  # stream true itu biar gambar kebaca
     # untuk mengecek apakah
     if r.status_code == 200:
         with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
@@ -49,7 +49,7 @@ for x in range(limit):
         "captcha": captcha
     }
 
-    res = session.post(links[x], data=data, headers=headers)
+    res = session.post(f"{links[x]}/login.php", data=data, headers=headers)
 
     cookie = session.cookies.get_dict()
     for val in cookie.values():
