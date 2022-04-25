@@ -37,7 +37,7 @@ for x in range(limit):
     # membuka file tesseract untuk libary pytesseract
     pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
 
-    img = cv2.imread("../image.jpg")
+    img = cv2.imread("/image.jpg")
     ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
     captcha = pytesseract.image_to_string(th1)
