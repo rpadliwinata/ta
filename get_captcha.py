@@ -48,10 +48,44 @@ data = {
     "captcha": captcha
 }
 
-res = session.post(
-    "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+with open("link_list.txt", "r") as file:
+    links = [link for link in file]
 
-cookies = session.cookies.get_dict()
+limit = 5
+cookies = []
+
+for x in range(limit):
+    # untuk bikin request ke link onion
+    # stream true itu biar gambar kebaca
+    r = session.get(links[x], stream=True, headers=headers)
+    # untuk mengecek apakah
+    if r.status_code == 200:
+        with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
+            r.raw.decode_content = True
+            shutil.copyfileobj(r.raw, f)
+
+    # membuka file tesseract untuk libary pytesseract
+    pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+
+    img = cv2.imread("../image.jpg")
+    ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
+    captcha = pytesseract.image_to_string(th1)
+    captcha = captcha.strip()
+
+    data = {
+        "username": "tugasakhir",
+        "password": "tugasakhir",
+        "captcha": captcha
+    }
+
+    res = session.post(
+        "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+
+    cookie = session.cookies.get_dict()
+    for val in cookie.values():
+        cookies.append(val)
+
 with open("cookies_list.txt", "w") as file:
-    for cookie in cookies.values():
-        file.write(cookie)
+    for cookie in cookies:
+        file.writelines(cookie)
