@@ -19,6 +19,7 @@ session = requests.Session()
 # untuk masang proxie ke sessionnya
 session.proxies = proxies
 
+# untuk membuka file link list dan membaca isi file tersebut
 with open("link_list.txt", "r") as file:
     links = [link for link in file]
 
@@ -26,9 +27,10 @@ limit = 5
 cookies = []
 
 for x in range(limit):
-    # untuk bikin request ke link onion
-    r = session.get(f"{links[x]}/captcha.php", stream=True, headers=headers)  # stream true itu biar gambar kebaca
-    # untuk mengecek apakah
+    # untuk bikin request ke link onion dan mengambil gambar captcha
+    # stream true itu biar gambar kebaca
+    r = session.get(f"{links[x]}/captcha.php", stream=True, headers=headers)
+    # untuk mengecek apakah gambar berhasil di ambil
     if r.status_code == 200:
         with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
             r.raw.decode_content = True
@@ -50,7 +52,6 @@ for x in range(limit):
     }
 
     res = session.post(f"{links[x]}/login.php", data=data, headers=headers)
-
     cookie = session.cookies.get_dict()
     for val in cookie.values():
         cookies.append(val)
@@ -58,5 +59,3 @@ for x in range(limit):
 with open("cookies_list.txt", "w") as file:
     for cookie in cookies:
         file.writelines(cookie)
-
-
