@@ -19,36 +19,45 @@ session = requests.Session()
 # untuk masang proxie ke sessionnya
 session.proxies = proxies
 
-# untuk bikin request ke link onion
-r = session.get("http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/captcha.php",
-                stream=True, headers=headers)  # stream true itu biar gambar kebaca
-# untu mengecek apakah
-if r.status_code == 200:
-    with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
-        r.raw.decode_content = True
-        shutil.copyfileobj(r.raw, f)
+with open("link_list.txt", "r") as file:
+    links = [link for link in file]
 
-# membuka file tesseract untuk libary pytesseract
-pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+limit = 5
+cookies = []
 
-img = cv2.imread("../image.jpg")
-ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+for x in range(limit):
+    # untuk bikin request ke link onion
+    r = session.get(links[x], stream=True, headers=headers)  # stream true itu biar gambar kebaca
+    # untuk mengecek apakah
+    if r.status_code == 200:
+        with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
+            r.raw.decode_content = True
+            shutil.copyfileobj(r.raw, f)
 
-captcha = pytesseract.image_to_string(th1)
-captcha = captcha.strip()
+    # membuka file tesseract untuk libary pytesseract
+    pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
 
-data = {
-    "username": "tugasakhir",
-    "password": "tugasakhir",
-    "captcha": captcha
-}
+    img = cv2.imread("../image.jpg")
+    ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
-res = session.post(
-    "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+    captcha = pytesseract.image_to_string(th1)
+    captcha = captcha.strip()
 
-cookies = session.cookies.get_dict()
+    data = {
+        "username": "tugasakhir",
+        "password": "tugasakhir",
+        "captcha": captcha
+    }
+
+    res = session.post(
+        "http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/login.php", data=data, headers=headers)
+
+    cookie = session.cookies.get_dict()
+    for val in cookie.values():
+        cookies.append(val)
+
 with open("cookies_list.txt", "w") as file:
-    for cookie in cookies.values:
+    for cookie in cookies:
         file.write(cookie)
 
 
