@@ -48,13 +48,9 @@ contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL,
                                        cv2.CHAIN_APPROX_NONE)
 
 im2 = img.copy()
-
 x, y, w, h = cv2.boundingRect(contours[0])
-
 rect = cv2.rectangle(im2, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
 cropped = im2[y:y + h, x:x + w]
-
 captcha = pytesseract.image_to_string(cropped)
 captcha = captcha.strip()
 
