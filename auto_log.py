@@ -20,8 +20,8 @@ class AutoLog:
         self.user_agent = user_agent or ua.random
         self.proxies = proxies or default_proxies
         self.tesseract = tesseract or 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
-        self.links = links or [link for link in open("link_list.txt", "r")]
-        self.result = result or "cookie_list.txt"
+        self.links = links or [link.strip() for link in open("link_list.txt", "r")]
+        self.result = result or "/cookie_list.txt"
 
     def register(self):
         success = []
