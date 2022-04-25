@@ -60,7 +60,7 @@ class AutoLog:
         return success
 
     def login(self):
-        cookies = []
+        cookie_list = []
         for x in range(self.limit):
             session = requests.Session()
             session.proxies = self.proxies
@@ -92,9 +92,9 @@ class AutoLog:
             if res.status_code == 200:
                 cookie = session.cookies.get_dict()
                 for val in cookie.values():
-                    cookies.append(val)
+                    cookie_list.append(val)
 
-        return cookies
+        return cookie_list
 
 
 if __name__ == "__main__":
@@ -110,6 +110,10 @@ if __name__ == "__main__":
     print("Cookies")
     for x in cookies:
         print(x)
+
+    with open(al.result, "w") as file:
+        for cookie in cookies:
+            file.writelines(cookie)
 
 
 
