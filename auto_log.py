@@ -14,9 +14,8 @@ default_proxies = {
 
 
 class AutoLog:
-
     # input untuk link onion seperti login/register serta kebutuhan akses link onion
-    def __init__(self, username=None, password=None, limit=None, proxies=None, user_agent=None, tesseract=None, links=None, result=None):
+    def __init__(self, username=None, password=None, limit=None, user_agent=None, proxies=None, tesseract=None, links=None, result=None):
         self.username = username or "tugasakhir"
         self.password = password or "tugasakhir"
         self.limit = limit or 5
@@ -25,7 +24,7 @@ class AutoLog:
         self.tesseract = tesseract or 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
         self.links = links or [link.strip()
                                for link in open("link_list.txt", "r")]
-        self.result = result or "/cookie_list.txt"
+        self.result = result or "cookie_list.txt"
 
     # metode untuk registrasi
     def register(self):
@@ -129,5 +128,5 @@ if __name__ == "__main__":
     for x in cookies:
         print(x)
     with open(al.result, "w") as file:
-        for cookie in cookies:
-            file.writelines(cookie)
+        for x in cookies:
+            file.writelines(x)
