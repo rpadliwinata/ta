@@ -44,15 +44,14 @@ def download_home(url, pagepath, proxies, user_agent, cookie):
     session = requests.Session()
     session.proxies = proxies
     headers = {'User-Agent': user_agent}
-    # ... whatever other requests config you need here
     response = session.get(url, headers=headers, cookies=cookie)
     raw = BeautifulSoup(response.text, "html.parser")
     path, _ = os.path.splitext(pagepath)
-    pagefolder = path + '_files'  # page contents folder
+    pagefolder = pagepath + "/" + path + '_files'  # page contents folder
     tags_inner = {'img': 'src', 'link': 'href', 'script': 'src'}  # tag&inner tags to grab
     for tag, inner in tags_inner.items():  # saves resource files and rename refs
         save_rename(raw, pagefolder, session, url, tag, inner)
-    with open(path + '.html', 'wb') as file:  # saves modified html doc
+    with open(pagepath + '/index.html', 'wb') as file:  # saves modified html doc
         file.write(raw.prettify('utf-8'))
     return True
 
@@ -192,7 +191,7 @@ class AutoLog:
 
 
 if __name__ == "__main__":
-    al = AutoLog()
+    al = AutoLog(limit=1)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl()
