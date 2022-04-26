@@ -143,4 +143,5 @@ if __name__ == "__main__":
     al = AutoLog()
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
+    al.crawl()
 
