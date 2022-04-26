@@ -121,7 +121,7 @@ class AutoLog:
 
         if _write:
             with open(self.result, "w") as file:
-                file.writelines(x + "\n" for x in cookies)
+                file.writelines(str(x) + "\n" for x in cookie_list)
 
         if _print:
             for x in cookie_list:
@@ -136,12 +136,13 @@ class AutoLog:
         for x in range(self.limit):
             website = urlcanon(self.links[x])
             outpath = folder(extract_domain(website))
-            crawler(website, self.cdepth, self.cpause, outpath, cookies[x])
+            crawler(website, self.cdepth, self.cpause,
+                    outpath, eval(cookies[x]))
             print(f"{self.links[x]} berhasil di-crawl")
 
+
 if __name__ == "__main__":
-    al = AutoLog()
+    al = AutoLog(limit=1)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl()
-

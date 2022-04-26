@@ -90,12 +90,14 @@ def crawler(website, cdepth, cpause, outpath, cookie=None):
             if ordlstind > 0:
                 if item is not None:
                     if cookie:
-                        response = requests.get(item, proxies=proxies, cookies=cookie)
+                        response = requests.get(
+                            item, proxies=proxies, cookies=cookie)
                     else:
                         response = requests.get(item, proxies=proxies)
             else:
                 if cookie:
-                    response = requests.get(website, proxies=proxies, cookies=cookie)
+                    response = requests.get(
+                        website, proxies=proxies, cookies=cookie)
                 else:
                     response = requests.get(website, proxies=proxies)
                 ordlstind += 1
@@ -155,7 +157,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None):
             lstfile.close()
 
             with open(f"{outpath}/cookie.txt", "w") as file:
-                file.write(cookie)
+                file.write(str(cookie))
 
         print(("\n## Kedalaman Ke-" + str(x + 1) +
               " selesai dengan jumlah link yang di dapat sebanyak : " + str(len(ordlst))))
