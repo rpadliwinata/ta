@@ -65,7 +65,7 @@ def canonical(link, website):
 # Proses Crawling
 
 
-def crawler(website, cdepth, cpause, outpath):
+def crawler(website, cdepth, cpause, outpath, cookie=None):
     lst = set()
     ordlst = []
     ordlst.insert(0, website)
@@ -84,13 +84,20 @@ def crawler(website, cdepth, cpause, outpath):
 
         # Pengulangan untuk tiap tiap item yang ada di ordlst
         for item in ordlst:
+            response = None
             global html_page
             # Pengecekan apakah ini merupakan pengulangan pertama ( website input )
             if ordlstind > 0:
                 if item is not None:
-                    response = requests.get(item, proxies=proxies)
+                    if cookie:
+                        response = requests.get(item, proxies=proxies, cookies=cookie)
+                    else:
+                        response = requests.get(item, proxies=proxies)
             else:
-                response = requests.get(website, proxies=proxies)
+                if cookie:
+                    response = requests.get(website, proxies=proxies, cookies=cookie)
+                else:
+                    response = requests.get(website, proxies=proxies)
                 ordlstind += 1
 
             html_page = response.text
@@ -146,6 +153,9 @@ def crawler(website, cdepth, cpause, outpath):
             for item in ordlst:
                 lstfile.write("%s\n" % item)
             lstfile.close()
+
+            with open(f"{outpath}/cookie.txt", "w") as file:
+                file.write(cookie)
 
         print(("\n## Kedalaman Ke-" + str(x + 1) +
               " selesai dengan jumlah link yang di dapat sebanyak : " + str(len(ordlst))))

@@ -1,9 +1,11 @@
-import requests
 from fake_useragent import UserAgent
 import shutil
 import pytesseract
 import cv2
 import requests
+import argparse
+from modules.crawler import crawler
+from modules.checker import *
 
 
 ua = UserAgent()
@@ -15,7 +17,7 @@ default_proxies = {
 
 class AutoLog:
     # input untuk link onion seperti login/register serta kebutuhan akses link onion
-    def __init__(self, username=None, password=None, limit=None, user_agent=None, proxies=None, tesseract=None, links=None, result=None):
+    def __init__(self, username=None, password=None, limit=None, user_agent=None, proxies=None, tesseract=None, links=None, result=None, cdepth=None, cpause=None):
         self.username = username or "tugasakhir"
         self.password = password or "tugasakhir"
         self.limit = limit or 5
@@ -25,9 +27,11 @@ class AutoLog:
         self.links = links or [link.strip()
                                for link in open("link_list.txt", "r")]
         self.result = result or "cookie_list.txt"
+        self.cdepth = cdepth or 1
+        self.cpause = cpause or 5
 
     # metode untuk registrasi
-    def register(self):
+    def register(self, _print=None):
         success = []  # menyimpan array link apakah berhasil diakses
         for x in range(self.limit):
             session = requests.Session()
@@ -68,10 +72,15 @@ class AutoLog:
                 success.append((self.links[x], True))
             else:
                 success.append((self.links[x], False))
+
+        if _print:
+            for x in success:
+                print(x)
+
         return success
 
     # metode untuk login
-    def login(self):
+    def login(self, _write=None, _print=None):
         cookie_list = []  # penyimpanan array cookie yang didapatkan
         for x in range(self.limit):
             session = requests.Session()
@@ -108,24 +117,30 @@ class AutoLog:
                 f"{self.links[x]}/login.php", data=data, headers=headers)
             if res.status_code == 200:  # mengecek apakah link dapat terakses
                 cookie = session.cookies.get_dict()
-                for val in cookie.values():
-                    cookie_list.append(val)
+                cookie_list.append(cookie)
+
+        if _write:
+            with open(self.result, "w") as file:
+                file.writelines(x + "\n" for x in cookies)
+
+        if _print:
+            for x in cookie_list:
+                print(x)
 
         return cookie_list
 
+    def crawl(self, cookie_list=None):
+        cookie_list = cookie_list or "cookie_list.txt"
+        cookies = [cookie for cookie in open(cookie_list, "r")]
+
+        for x in range(self.limit):
+            website = urlcanon(self.links[x])
+            outpath = folder(extract_domain(website))
+            crawler(website, self.cdepth, self.cpause, outpath, cookies[x])
+            print(f"{self.links[x]} berhasil di-crawl")
 
 if __name__ == "__main__":
     al = AutoLog()
-    registered = al.register()
+    registered = al.register(_print=True)
+    cookies = al.login(_write=True, _print=True)
 
-    print("Register status")
-    for x in registered:
-        print(x)
-
-    cookies = al.login()
-
-    print("Cookies")
-    for x in cookies:
-        print(x)
-    with open(al.result, "w") as file:
-        file.writelines(x + "\n" for x in cookies)
