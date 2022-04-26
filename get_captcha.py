@@ -50,7 +50,6 @@ for x in range(limit):
         "password": "tugasakhir",
         "captcha": captcha
     }
-
     res = session.post(f"{links[x]}/login.php", data=data, headers=headers)
     cookie = session.cookies.get_dict()
     for val in cookie.values():
