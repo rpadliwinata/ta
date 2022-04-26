@@ -1,11 +1,13 @@
+import os, sys, re
 from fake_useragent import UserAgent
 import shutil
 import pytesseract
 import cv2
-import requests
-import argparse
 from modules.crawler import crawler
 from modules.checker import *
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 
 
 ua = UserAgent()
@@ -13,6 +15,46 @@ default_proxies = {
     'http': 'socks5h://localhost:9050',
     "https": 'socks5h://localhost:9050'
 }
+
+def read_cookie(path):
+    return [x for x in open(path, "r")]
+
+
+def save_rename(raw, pagefolder, session, url, tag, inner):
+    if not os.path.exists(pagefolder):  # create only once
+        os.mkdir(pagefolder)
+    for result in raw.findAll(tag):  # images, css, etc..
+        if result.has_attr(inner):  # check inner tag (file object) MUST exists
+            try:
+                filename, ext = os.path.splitext(os.path.basename(result[inner]))  # get name and extension
+                filename = re.sub('\W+', '', filename) + ext  # clean special chars from name
+                fileurl = urljoin(url, result.get(inner))
+                filepath = os.path.join(pagefolder, filename)
+                # rename html ref so can move html and folder of files anywhere
+                result[inner] = os.path.join(os.path.basename(pagefolder), filename)
+                if not os.path.isfile(filepath):  # was not downloaded
+                    with open(filepath, 'wb') as file:
+                        filebin = session.get(fileurl)
+                        file.write(filebin.content)
+            except Exception as exc:
+                print(exc, file=sys.stderr)
+
+
+def download_home(url, pagepath, proxies, user_agent, cookie):
+    session = requests.Session()
+    session.proxies = proxies
+    headers = {'User-Agent': user_agent}
+    # ... whatever other requests config you need here
+    response = session.get(url, headers=headers, cookies=cookie)
+    raw = BeautifulSoup(response.text, "html.parser")
+    path, _ = os.path.splitext(pagepath)
+    pagefolder = path + '_files'  # page contents folder
+    tags_inner = {'img': 'src', 'link': 'href', 'script': 'src'}  # tag&inner tags to grab
+    for tag, inner in tags_inner.items():  # saves resource files and rename refs
+        save_rename(raw, pagefolder, session, url, tag, inner)
+    with open(path + '.html', 'wb') as file:  # saves modified html doc
+        file.write(raw.prettify('utf-8'))
+    return True
 
 
 class AutoLog:
@@ -141,9 +183,17 @@ class AutoLog:
                     outpath, eval(cookies[x]))
             print(f"{self.links[x]} berhasil di-crawl")
 
+    def download(self):
+        existing_cookies = read_cookie("cookie_list.txt")
+        for x in range(self.limit):
+            outpath = folder(extract_domain(self.links[x]))
+            if download_home(self.links[x], outpath, self.proxies, self.user_agent, eval(existing_cookies[x])):
+                print(f"{outpath} downloaded")
+
 
 if __name__ == "__main__":
     al = AutoLog(limit=1)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl()
+    al.download()
