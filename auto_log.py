@@ -119,11 +119,11 @@ class AutoLog:
                 cookie = session.cookies.get_dict()
                 cookie_list.append(cookie)
 
-        if _write:
+        if _write:  # menyimpan cookie di file cookie_list
             with open(self.result, "w") as file:
                 file.writelines(str(x) + "\n" for x in cookie_list)
 
-        if _print:
+        if _print:  # menampilkan cookie list pada terminal
             for x in cookie_list:
                 print(x)
 
@@ -142,7 +142,7 @@ class AutoLog:
 
 
 if __name__ == "__main__":
-    al = AutoLog(limit=1)
+    al = AutoLog()
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl()
