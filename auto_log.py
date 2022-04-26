@@ -16,12 +16,12 @@ default_proxies = {
 class AutoLog:
 
     # input untuk link onion seperti login/register serta kebutuhan akses link onion
-    def __init__(self, username=None, password=None, limit=None, user_agent=None, tesseract=None, links=None, result=None):
+    def __init__(self, username=None, password=None, limit=None, user_agent=None, proxies=None, tesseract=None, links=None, result=None):
         self.username = username or "tugasakhir"
         self.password = password or "tugasakhir"
         self.limit = limit or 5
         self.user_agent = user_agent or ua.random
-        self.proxies = default_proxies
+        self.proxies = proxies or default_proxies
         self.tesseract = tesseract or 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
         self.links = links or [link.strip()
                                for link in open("link_list.txt", "r")]
