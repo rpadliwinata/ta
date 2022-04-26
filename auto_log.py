@@ -128,4 +128,4 @@ if __name__ == "__main__":
     for x in cookies:
         print(x)
     with open(al.result, "w") as file:
-        file.writelines(x + "\n" for x in file)
+        file.writelines(x + "\n" for x in cookies)
