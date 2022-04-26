@@ -12,36 +12,46 @@ default_proxies = {
     "https": 'socks5h://localhost:9050'
 }
 
+
 class AutoLog:
-    def __init__(self, username=None, password=None, limit=None, user_agent=None, proxies=None, tesseract=None, links=None, result=None):
+
+    # input untuk link onion seperti login/register serta kebutuhan akses link onion
+    def __init__(self, username=None, password=None, limit=None, user_agent=None, tesseract=None, links=None, result=None):
         self.username = username or "tugasakhir"
         self.password = password or "tugasakhir"
         self.limit = limit or 5
         self.user_agent = user_agent or ua.random
-        self.proxies = proxies or default_proxies
+        self.proxies = default_proxies
         self.tesseract = tesseract or 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
-        self.links = links or [link.strip() for link in open("link_list.txt", "r")]
+        self.links = links or [link.strip()
+                               for link in open("link_list.txt", "r")]
         self.result = result or "/cookie_list.txt"
 
+    # metode untuk registrasi
     def register(self):
-        success = []
+        success = []  # menyimpan array link apakah berhasil diakses
         for x in range(self.limit):
             session = requests.Session()
             session.proxies = self.proxies
             headers = {'User-Agent': self.user_agent}
 
-            r = session.get(f"{self.links[x]}/captcha.php", stream=True, headers=headers)
+            # request untuk akses captcha
+            r = session.get(
+                f"{self.links[x]}/captcha.php", stream=True, headers=headers)
 
-            if r.status_code == 200:
-                with open("/image.jpg", "wb") as f:
+            if r.status_code == 200:  # memeriksa apakah captcha dapat terakses
+                with open("/image.jpg", "wb") as f:  # penyimpanan gambar captcha
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
 
+            # membuka file tesseract untuk libary pytesseract
             pytesseract.pytesseract.tesseract_cmd = self.tesseract
 
+            # preprocessing gambar captcha
             img = cv2.imread("/image.jpg")
             ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
+            # melakukan OCR captcha
             captcha = pytesseract.image_to_string(th1)
             captcha = captcha.strip()
 
@@ -52,33 +62,39 @@ class AutoLog:
                 "captcha": captcha
             }
 
-            res = session.post(f"{self.links[x]}/register.php", data=data, headers=headers)
-            if res.status_code == 200:
+            # request link register dan mengisinya dengan data
+            res = session.post(
+                f"{self.links[x]}/register.php", data=data, headers=headers)
+            if res.status_code == 200:  # mengecek status link apakah dapat terakses
                 success.append((self.links[x], True))
             else:
                 success.append((self.links[x], False))
         return success
 
+    # metode untuk login
     def login(self):
-        cookies = []
+        cookies = []  # penyimpanan array cookie yang didapatkan
         for x in range(self.limit):
             session = requests.Session()
             session.proxies = self.proxies
             headers = {'User-Agent': self.user_agent}
 
-            r = session.get(f"{self.links[x]}/captcha.php", stream=True, headers=headers)  # stream true itu biar gambar kebaca
-            # untuk mengecek apakah
+            r = session.get(
+                f"{self.links[x]}/captcha.php", stream=True, headers=headers)  # stream true itu biar gambar kebaca
+            # untuk mengecek apakah gambar terakses
             if r.status_code == 200:
                 with open("/image.jpg", 'wb') as f:  # menyimpan gambar captcha
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
 
             # membuka file tesseract untuk libary pytesseract
-            pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+            pytesseract.pytesseract.tesseract_cmd = self.tesseract
 
+            # preprocessing image untuk menghilangkan noise
             img = cv2.imread("/image.jpg")
             ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
 
+            # melakukan OCR pada gambar captcha
             captcha = pytesseract.image_to_string(th1)
             captcha = captcha.strip()
 
@@ -88,8 +104,10 @@ class AutoLog:
                 "captcha": captcha
             }
 
-            res = session.post(f"{self.links[x]}/login.php", data=data, headers=headers)
-            if res.status_code == 200:
+            # melakukan request untuk halaman login dan mengisi dengan data
+            res = session.post(
+                f"{self.links[x]}/login.php", data=data, headers=headers)
+            if res.status_code == 200:  # mengecek apakah link dapat terakses
                 cookie = session.cookies.get_dict()
                 for val in cookie.values():
                     cookies.append(val)
@@ -110,6 +128,3 @@ if __name__ == "__main__":
     print("Cookies")
     for x in cookies:
         print(x)
-
-
-
