@@ -75,7 +75,8 @@ class AutoLog:
 
         if _print:
             for x in success:
-                print(x)
+                if x[1]:
+                    print(f"Berhasil register web {x[0]}")
 
         return success
 
@@ -123,9 +124,9 @@ class AutoLog:
             with open(self.result, "w") as file:
                 file.writelines(str(x) + "\n" for x in cookie_list)
 
-        if _print:  # menampilkan cookie list pada terminal
-            for x in cookie_list:
-                print(x)
+        if _print:
+            for x in range(self.limit):
+                print(f"Cookie web {self.links[x]}: {cookie_list[x]}")
 
         return cookie_list
 
