@@ -153,9 +153,9 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
                     time.sleep(float(cpause))
 
             if concat:
-                lstfile = open(outpath + '/links.txt', 'w+')
-            else:
                 lstfile = open('links.txt', 'w+')
+            else:
+                lstfile = open(outpath + '/links.txt', 'w+')
 
             for item in ordlst:
                 lstfile.write("%s\n" % item)
