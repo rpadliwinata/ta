@@ -1,4 +1,5 @@
 from os import system
+from pickle import NONE
 import sys
 import re
 import requests
@@ -136,7 +137,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None):
             ttlweb = ttlweb + 1
 
             sys.stdout.flush()
-            sys.stdout.write("\n-- Jumlah web yng telah di crawl di kedalamaman " +
+            sys.stdout.write("-- Jumlah web yng telah di crawl di kedalamaman " +
                              str(x+1) + " adalah: " + str(ttlweb) + "\r")
             sys.stdout.flush()
 
