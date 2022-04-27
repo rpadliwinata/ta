@@ -211,5 +211,5 @@ if __name__ == "__main__":
     al = AutoLog(limit=2)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
-    al.crawl()
+    al.crawl(concat=True)
     al.download()
