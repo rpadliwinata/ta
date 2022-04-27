@@ -33,7 +33,6 @@ def folder(website):
         print(("## Folder terbuat : " + outpath))
     return outpath
 
-
 # Pengecekan TOR Service
 def checktor():
     # checkfortor = subprocess.check_output(['ps', '-e'])
