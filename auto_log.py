@@ -196,7 +196,7 @@ class AutoLog:
             website = urlcanon(self.links[x])
             outpath = folder(extract_domain(website))
             crawler(website, self.cdepth, self.cpause,
-                    outpath, eval(cookies[x]))
+                    outpath, eval(cookies[x]), concat=True)
             print(f"{self.links[x]} berhasil di-crawl\n")
 
     def download(self):  # untuk save link html

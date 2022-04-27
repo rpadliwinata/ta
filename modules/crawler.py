@@ -66,7 +66,7 @@ def canonical(link, website):
 # Proses Crawling
 
 
-def crawler(website, cdepth, cpause, outpath, cookie=None):
+def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
     lst = set()
     ordlst = []
     ordlst.insert(0, website)
@@ -152,7 +152,11 @@ def crawler(website, cdepth, cpause, outpath, cookie=None):
                           str(cpause) + " detik\n")
                     time.sleep(float(cpause))
 
-            lstfile = open(outpath + '/links.txt', 'w+')
+            if concat:
+                lstfile = open(outpath + '/links.txt', 'w+')
+            else:
+                lstfile = open('links.txt', 'w+')
+
             for item in ordlst:
                 lstfile.write("%s\n" % item)
             lstfile.close()
