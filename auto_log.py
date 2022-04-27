@@ -1,4 +1,3 @@
-import os, sys, re
 from fake_useragent import UserAgent
 import shutil
 import pytesseract
