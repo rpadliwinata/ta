@@ -1,4 +1,5 @@
 from os import system
+from pickle import NONE
 import sys
 import re
 import requests
