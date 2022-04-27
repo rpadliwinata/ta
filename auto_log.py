@@ -187,7 +187,7 @@ class AutoLog:
 
         return cookie_list
 
-    def crawl(self, cookie_list=None):
+    def crawl(self, cookie_list=None, concat=False):
         cookie_list = cookie_list or "cookie_list.txt"
         # membaca cookie dari file
         cookies = [cookie for cookie in open(cookie_list, "r")]
@@ -196,7 +196,7 @@ class AutoLog:
             website = urlcanon(self.links[x])
             outpath = folder(extract_domain(website))
             crawler(website, self.cdepth, self.cpause,
-                    outpath, eval(cookies[x]), concat=True)
+                    outpath, eval(cookies[x]), concat=concat)
             print(f"{self.links[x]} berhasil di-crawl\n")
 
     def download(self):  # untuk save link html
