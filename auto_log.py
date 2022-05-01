@@ -199,6 +199,11 @@ class AutoLog:
                     outpath, eval(cookies[x]), concat=concat)
             print(f"{self.links[x]} berhasil di-crawl\n")
 
+        with open("links.txt", "w+") as file:
+            links = [x for x in file]
+            links = set(links)
+            _ = [file.writelines(x) for x in links]
+
     def download(self):  # untuk save link html
         existing_cookies = read_cookie("cookie_list.txt")
         for x in range(self.limit):
@@ -208,8 +213,8 @@ class AutoLog:
 
 
 if __name__ == "__main__":
-    al = AutoLog(limit=2)
+    al = AutoLog(limit=2, cdepth=2)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl(concat=True)
-    al.download()
+    # al.download()
