@@ -208,7 +208,7 @@ class AutoLog:
 
 
 if __name__ == "__main__":
-    al = AutoLog(limit=2)
+    al = AutoLog(limit=2, cdepth=2, cpause=10)
     registered = al.register(_print=True)
     cookies = al.login(_write=True, _print=True)
     al.crawl(concat=True)
