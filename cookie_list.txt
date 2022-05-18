@@ -1,2 +1,0 @@
-{'PHPSESSID': '77132uje44gm9acrjvdci1hnv2'}
-{'PHPSESSID': '9d5v3sv5u04tcu9n8m9l4jmu70'}
