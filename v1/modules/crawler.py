@@ -153,10 +153,6 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
                     time.sleep(float(cpause))
 
             if concat:
-<<<<<<< HEAD:modules/crawler.py
-                #lstfile = open('links.txt', 'w+')
-=======
->>>>>>> 1d20154ed052f0b822015259d6c4f3ad9dd3a896:v1/modules/crawler.py
                 lstfile = open('links.txt', 'a+')
             else:
                 lstfile = open(outpath + '/links.txt', 'w+')

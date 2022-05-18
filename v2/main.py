@@ -20,7 +20,7 @@ cookie = {}
 #     onion_links = [x.strip() for x in file]
 
 # link = onion_links[0]
-link = 'http://y22arit74fqnnc2pbieq3wqqvkfub6gnlegx3cl6thclos4f7ya7rvad.onion/'
+link = 'http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/'
 success = False
 attempt = 0
 
@@ -112,4 +112,6 @@ website = urlcanon(link)
 outpath = folder(extract_domain(website))
 depth = input("Depth: ")
 pause = input("Pause: ")
-crawler(website, depth, pause, outpath, cookie, concat=True)
+crawler(website, depth, pause, outpath, cookie=cookie, concat=True)
+
+print(cookie)
