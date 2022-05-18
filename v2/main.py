@@ -57,7 +57,10 @@ while not success or attempt != 10:
     res = session.post(f"{link}/register.php", data=data, headers=headers)
     soup = BeautifulSoup(res.content, 'html.parser')
     warning = soup.find('span', id='warning')
-    if warning.text == "Error: Username already exists" or not warning:
+    if warning:
+        if warning.text == "Error: Username already exists":
+            success = True
+    else:
         success = True
     attempt += 1
 
