@@ -22,9 +22,10 @@ cookie = {}
 # link = onion_links[0]
 link = 'http://wbz2lrxhw4dd7h5t2wnoczmcz5snjpym4pr7dzjmah4vi6yywn37bdyd.onion/'
 success = False
-attempt = 0
+attempt = 1
 
-while not success or attempt != 10:
+while not success:
+    print(f"Attempt number {attempt}")
     # for link in onion_links:
     session = requests.Session()
     session.proxies = default_proxies
@@ -66,10 +67,13 @@ while not success or attempt != 10:
 
 if not success:
     print("Register failed")
+else:
+    print("Register success")
 
 success = False
-attempt = 0
-while not success or attempt != 10:
+attempt = 1
+while not success:
+    print(f"Attempt number {attempt}")
     session = requests.Session()
     session.proxies = default_proxies
     headers = {'User-Agent': ua.random}
@@ -99,19 +103,28 @@ while not success or attempt != 10:
     }
 
     # melakukan request untuk halaman login dan mengisi dengan data
+    res = session.get(f"{link}/login.php")
+    cookie = dict(res.cookies)
     res = session.post(f"{link}/login.php", data=data, headers=headers)
     soup = BeautifulSoup(res.content, 'html.parser')
     warning = soup.find('span', id='warning')
     if not warning:
         success = True
-        cookie = res.cookies.get_dict()
+        cookie = session.cookies.get_dict()
+    else:
+        print(warning)
     attempt += 1
 
+if not success:
+    print("Login failed")
+else:
+    print("Login success")
+    print(cookie)
 
-website = urlcanon(link)
-outpath = folder(extract_domain(website))
-depth = input("Depth: ")
-pause = input("Pause: ")
-crawler(website, depth, pause, outpath, cookie=cookie, concat=True)
-
-print(cookie)
+#
+#
+# website = urlcanon(link)
+# outpath = folder(extract_domain(website))
+# depth = input("Depth: ")
+# pause = input("Pause: ")
+# crawler(website, depth, pause, outpath, cookie, concat=True)
