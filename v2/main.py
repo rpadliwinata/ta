@@ -1,27 +1,30 @@
-import requests
-import pytesseract
-import cv2
 import shutil
-
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-
+import requests
+import pytesseract  # melakukan OCR gambar
+import cv2  # untuk preprocess image
+from bs4 import BeautifulSoup  # untuk parse html
+from fake_useragent import UserAgent  # untuk bikin user agent
 from checker import urlcanon, extract_domain, folder
 from crawler import crawler
 
+# membuat objek user
 ua = UserAgent()
+
+# pemasangan proxies untuk akses .onion
 default_proxies = {
     'http': 'socks5h://localhost:9050',
     "https": 'socks5h://localhost:9050'
 }
-cookie = {}
 
+# input parameter crawl link
+cookie = {}
 links = [link.strip() for link in open("onion_list.txt", "r")]
 limit = int(input("Limit: "))
 i_depth = input("Depth: ")
 i_pause = input("Pause: ")
 
 for x in range(limit):
+    # crawling sebelum halaman login
     link = links[x]
     success = False
     attempt = 1
@@ -29,8 +32,7 @@ for x in range(limit):
     website = urlcanon(link)
     outpath = folder(extract_domain(website))
     depth = 1
-    pause = 5
-    crawler(website, depth, pause, outpath, cookie, concat=True)
+    crawler(website, depth, i_pause, outpath, cookie, concat=True)
 
     while not success:
         print(f"Attempt number {attempt}")
