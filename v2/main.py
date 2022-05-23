@@ -48,6 +48,7 @@ while not success or attempt != 10:
     captcha = pytesseract.image_to_string(th1)
     captcha = captcha.strip()
 
+    # data untuk register
     data = {
         "username": "tugasakhir",
         "password1": "tugasakhir",
@@ -92,6 +93,7 @@ while not success or attempt != 10:
     captcha = pytesseract.image_to_string(th1)
     captcha = captcha.strip()
 
+    # data untuk login
     data = {
         "username": "tugasakhir",
         "password": "tugasakhir",
@@ -104,7 +106,7 @@ while not success or attempt != 10:
     warning = soup.find('span', id='warning')
     if not warning:
         success = True
-        cookie = res.cookies.get_dict()
+        cookie = session.cookies.get_dict()
     attempt += 1
 
 
