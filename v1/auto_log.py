@@ -213,12 +213,4 @@ class AutoLog:
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD:auto_log.py
     al = AutoLog(limit=2, cdepth=2, cpause=10)
-=======
-    al = AutoLog(limit=2, cdepth=2)
->>>>>>> 1d20154ed052f0b822015259d6c4f3ad9dd3a896:v1/auto_log.py
-    registered = al.register(_print=True)
-    cookies = al.login(_write=True, _print=True)
-    al.crawl(concat=True)
-    # al.download()

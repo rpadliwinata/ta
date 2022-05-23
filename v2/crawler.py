@@ -72,6 +72,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
     ordlst.insert(0, website)
     ordlstind = 0
     ttlweb = 0
+    result = []
 
     print((
         "## Crawling dimulai dari " + website +
@@ -152,18 +153,19 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
                           str(cpause) + " detik\n")
                     time.sleep(float(cpause))
 
-            if concat:
-                lstfile = open('links.txt', 'a+')
-            else:
-                lstfile = open(outpath + '/links.txt', 'w+')
-
-            for item in ordlst:
-                lstfile.write("%s\n" % item)
-            lstfile.close()
-
-            with open(f"{outpath}/cookie.txt", "w") as file:
-                file.write(str(cookie))
-
+            result.extend(ordlst)
         print(("\n## Kedalaman Ke-" + str(x + 1) +
-              " selesai dengan jumlah link yang di dapat sebanyak : " + str(len(ordlst))))
+               " selesai dengan jumlah link yang di dapat sebanyak : " + str(len(ordlst))))
         ttlweb = 0
+    if concat:
+        lstfile = open('links.txt', 'a+')
+    else:
+        lstfile = open(outpath + '/links.txt', 'w+')
+
+
+    for item in set(ordlst):
+        lstfile.write("%s\n" % item)
+    lstfile.close()
+
+    with open(f"{outpath}/cookie.txt", "w") as file:
+        file.write(str(cookie))
