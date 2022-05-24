@@ -128,7 +128,21 @@ def get_cookie(limit, link):
 
 def remove_multiple(file):
     links = [x.strip() for x in open('links.txt', 'r+')]
+
+    temp = []
+    res = []
+    current = links[0]
+
+    for x in links:
+        if x[:15] == current[:15]:
+            temp.append(x)
+        else:
+            current = x
+            res.extend(list(set(temp)))
+            temp = []
+    res.extend(list(set(temp)))
+
     with open('links.txt', 'r+') as file:
         file.truncate(0)
-        for x in set(links):
+        for x in res:
             file.writelines(f"{x}\n")
