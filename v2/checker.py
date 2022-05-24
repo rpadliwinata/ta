@@ -30,10 +30,12 @@ def folder(website):
     outpath = website
     if not os.path.exists(outpath):
         os.makedirs(outpath)
-        print(("## Folder terbuat : " + outpath))
+        print(("\n## Folder terbuat : " + outpath))
     return outpath
 
 # Pengecekan TOR Service
+
+
 def checktor():
     # checkfortor = subprocess.check_output(['ps', '-e'])
     checkfortor = subprocess.check_output(['net', 'start'])
