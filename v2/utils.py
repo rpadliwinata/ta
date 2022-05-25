@@ -1,3 +1,5 @@
+import re
+
 import requests
 import shutil
 import pytesseract
@@ -146,3 +148,11 @@ def remove_multiple(file):
         file.truncate(0)
         for x in res:
             file.writelines(f"{x}\n")
+
+def is_contain_keyword(link, keyword, session, cookie):
+    headers = random_header()
+    response = session.get(link, headers=headers, cookies=cookie)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    result = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+    return len(result) > 0
+
