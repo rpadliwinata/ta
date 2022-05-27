@@ -33,11 +33,10 @@ def random_header():
 # concat=True untuk membuat isi digabung pada file lnks.txt
 
 
-def save_to_file(link, depth=2, pause=None, concat=True, cookie=None):  # parameter yang dibutuhkan
-    if not pause:
-        pause = 5
+# parameter yang dibutuhkan
+def save_to_file(link, depth, pause, concat=True, cookie=None):
     if not cookie:
-        cookie = {}  # gar dapat melakukan crawling dengan cookies
+        cookie = {}  # agar dapat melakukan crawling dengan cookies
     website = urlcanon(link)
     outpath = folder(extract_domain(website))  # membuat folder dan return path
     crawler(website, depth, pause, outpath, cookie, concat=concat)

@@ -16,8 +16,9 @@ if __name__ == "__main__":
 
     for x in range(limit):
         link = links[x]
-        save_to_file(link)  # crawling URL sebelum login
-        register(10, link)  # 10 jumalh max attempt
+        # crawling URL sebelum login
+        save_to_file(link, depth=i_depth, pause=i_pause)
+        register(10, link)  # 10 jumlah max attempt
         # login -> nama cookie karena mau ambil cookie
         cookie = get_cookie(10, link)
         save_to_file(link, depth=i_depth, pause=i_pause,
