@@ -37,7 +37,7 @@ if __name__ == "__main__":
                         print(f"{y} is contain '{k_word}'")
                         link_contain_keyword.append(y)
 
-        with open('result.txt', 'w+') as file:
+        with open(f'{k_word}.txt', 'w+') as file:
             for x in link_contain_keyword:
                 file.writelines(f"{x}\n")
     else:
