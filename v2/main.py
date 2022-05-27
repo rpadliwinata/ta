@@ -42,4 +42,3 @@ if __name__ == "__main__":
                 file.writelines(f"{x}\n")
     else:
         print('Empty')
-
