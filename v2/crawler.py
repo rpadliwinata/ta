@@ -11,7 +11,7 @@ proxies = {
     "https": 'socks5h://localhost:9050'
 }
 
-# Menghapus bagian yang yang tidak digunakan
+# Menghapus bagian yang tidak digunakan
 
 
 def excludes(link, website, outpath):
@@ -138,7 +138,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
             ttlweb = ttlweb + 1
 
             sys.stdout.flush()
-            sys.stdout.write("-- Jumlah web yng telah di crawl di kedalamaman " +
+            sys.stdout.write("-- Jumlah web yang telah di crawl di kedalamaman " +
                              str(x+1) + " adalah: " + str(ttlweb) + "\r")
             sys.stdout.flush()
 
@@ -161,7 +161,6 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
         lstfile = open('links.txt', 'a+')
     else:
         lstfile = open(outpath + '/links.txt', 'w+')
-
 
     for item in set(ordlst):
         lstfile.write("%s\n" % item)
