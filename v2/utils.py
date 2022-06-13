@@ -177,14 +177,3 @@ def remove_multiple(file):
         file.truncate(0)  # menghapus semua link.txt yang sebelumnya
         for x in res:
             file.writelines(f"{x}\n")
-
-# untuk crawling dengan keyword.
-
-
-def is_contain_keyword(link, keyword, session, cookie):
-    headers = random_header()
-    response = session.get(link, headers=headers, cookies=cookie)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    # untuk cek apa ada kata" yang sesuai keyword. IGNORECASE biar ga case sensitiv
-    result = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
-    return len(result) > 0  # untuk ngecek ketika ketemu keyword
