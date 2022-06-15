@@ -25,7 +25,7 @@ def excludes(link, website, outpath):
         lstfile = open(outpath + '/extlinks.txt', 'w+')
         lstfile.write(str(link) + '\n')
         lstfile.close()
-        return True
+        return True 
     # Nomor Telefon
     elif link.startswith('tel:'):
         lstfile = open(outpath + '/telephones.txt', 'w+')
@@ -83,7 +83,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
 
     # Loop Berdasarkan Kedalaman
     for x in range(0, int(cdepth)):
-
+        start = time.time()
         # Pengulangan untuk tiap tiap item yang ada di ordlst
         for item in ordlst:
             response = None
@@ -105,7 +105,7 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
                 ordlstind += 1
 
             html_page = response.text
-            #soup = BeautifulSoup(html_page, "lxml")
+            # soup = BeautifulSoup(html_page, "lxml")
             soup = BeautifulSoup(html_page, "html.parser")
 
             # Pengulangan  untuk setiap tanda <a href="">
@@ -154,9 +154,11 @@ def crawler(website, cdepth, cpause, outpath, cookie=None, concat=False):
                     time.sleep(float(cpause))
 
             result.extend(ordlst)
-        print(("\n## Kedalaman Ke-" + str(x + 1) +
-               " selesai dengan jumlah link yang di dapat sebanyak : " + str(len(ordlst))))
+        end = time.time()
+        print(("\n## Kedalaman Ke-" + str(x + 1) + " selesai dengan jumlah link yang di dapat sebanyak : " +
+              str(len(ordlst)) + " dengan waktu : " + str(end-start)))
         ttlweb = 0
+
     if concat:
         lstfile = open('links.txt', 'a+')
     else:

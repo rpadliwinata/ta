@@ -3,6 +3,7 @@ import requests
 import shutil
 import pytesseract
 import cv2
+import time
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 
@@ -119,6 +120,7 @@ def get_cookie(limit, link):
     success = False
     cookie = {}
     while not success:
+        start = time.time()
         if attempt == limit:
             break
         print(f"Attempt number {attempt}")
@@ -149,9 +151,9 @@ def get_cookie(limit, link):
         return {}
     else:
         print("Login success")
-        print(cookie)
+        end = time.time()
+        print((cookie + " dengan waktu : " + str(end-start)))
         return cookie
-
 # menghapus link yang sama saat crawling
 
 
