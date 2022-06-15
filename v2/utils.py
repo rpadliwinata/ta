@@ -151,8 +151,6 @@ def get_cookie(limit, link):
         return {}
     else:
         print("Login success")
-        end = time.time()
-        print((cookie + " dengan waktu : " + str(end-start)))
         return cookie
 # menghapus link yang sama saat crawling
 
