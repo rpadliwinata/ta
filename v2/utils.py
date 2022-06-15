@@ -33,11 +33,10 @@ def random_header():
 # concat=True untuk membuat isi digabung pada file lnks.txt
 
 
-def save_to_file(link, depth=2, pause=None, concat=True, cookie=None):  # parameter yang dibutuhkan
-    if not pause:
-        pause = 5
+# parameter yang dibutuhkan
+def save_to_file(link, depth, pause, concat=True, cookie=None):
     if not cookie:
-        cookie = {}  # gar dapat melakukan crawling dengan cookies
+        cookie = {}  # agar dapat melakukan crawling dengan cookies
     website = urlcanon(link)
     outpath = folder(extract_domain(website))  # membuat folder dan return path
     crawler(website, depth, pause, outpath, cookie, concat=concat)
@@ -178,14 +177,3 @@ def remove_multiple(file):
         file.truncate(0)  # menghapus semua link.txt yang sebelumnya
         for x in res:
             file.writelines(f"{x}\n")
-
-# untuk crawling dengan keyword.
-
-
-def is_contain_keyword(link, keyword, session, cookie):
-    headers = random_header()
-    response = session.get(link, headers=headers, cookies=cookie)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    # untuk cek apa ada kata" yang sesuai keyword. IGNORECASE biar ga case sensitiv
-    result = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
-    return len(result) > 0  # untuk ngecek ketika ketemu keyword
