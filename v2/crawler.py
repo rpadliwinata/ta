@@ -25,7 +25,7 @@ def excludes(link, website, outpath):
         lstfile = open(outpath + '/extlinks.txt', 'w+')
         lstfile.write(str(link) + '\n')
         lstfile.close()
-        return True 
+        return True
     # Nomor Telefon
     elif link.startswith('tel:'):
         lstfile = open(outpath + '/telephones.txt', 'w+')

@@ -152,28 +152,3 @@ def get_cookie(limit, link):
     else:
         print("Login success")
         return cookie
-# menghapus link yang sama saat crawling
-
-
-def remove_multiple(file):
-    links = [x.strip() for x in open('links.txt', 'r+')
-             ]  # ngambil link dari links.txt
-    # wadah variabel
-    temp = []
-    res = []
-    current = links[0]  # link pertama di file links.txt
-
-    for x in links:
-        if x[:15] == current[:15]:  # mengecek awalan base link sama atau engga
-            temp.append(x)
-        else:
-            current = x
-            # biar tidak ada list dalam list dan tidak berulang
-            res.extend(list(set(temp)))
-            temp = []
-    res.extend(list(set(temp)))  # penyimpanan link terakhir
-
-    with open('links.txt', 'r+') as file:
-        file.truncate(0)  # menghapus semua link.txt yang sebelumnya
-        for x in res:
-            file.writelines(f"{x}\n")

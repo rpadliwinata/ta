@@ -1,1 +1,1 @@
-{}
+{'PHPSESSID': 'kmu1j4ru2mkpm53g4442nosg16'}
