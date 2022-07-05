@@ -6,16 +6,19 @@ default_proxies = {
     "https": 'socks5h://localhost:9050'
 }
 
+
 def get_input():
     link = input("Link: ")
     i_depth = input("Depth: ")
     return link, i_depth
 
+
 if __name__ == "__main__":
     # input parameter crawl link
     # links = [link.strip() for link in open("onion_list.txt", "r")]
     link, i_depth = '', ''
-    while link == '' and i_depth == '':
+    while link == '' or i_depth == '':
+        print("Silahkan Lengkapi Input")
         link, i_depth = get_input()
     i_pause = input("Pause: ")
     if i_pause == '':
