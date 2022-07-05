@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # input parameter crawl link
     # links = [link.strip() for link in open("onion_list.txt", "r")]
     link, i_depth = None, None
-    while link is None and i_depth is None:
+    while link == '' and i_depth == '':
         link, i_depth = get_input()
     i_pause = input("Pause: ")
     if i_pause == '':
