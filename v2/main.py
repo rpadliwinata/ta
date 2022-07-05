@@ -6,12 +6,22 @@ default_proxies = {
     "https": 'socks5h://localhost:9050'
 }
 
+def get_input():
+    link = input("Link: ")
+    i_depth = input("Depth: ")
+    return link, i_depth
+
 if __name__ == "__main__":
     # input parameter crawl link
     # links = [link.strip() for link in open("onion_list.txt", "r")]
-    link = input("Link: ")
-    i_depth = input("Depth: ")
+    link, i_depth = None, None
+    while link is None and i_depth is None:
+        link, i_depth = get_input()
     i_pause = input("Pause: ")
+    if i_pause == '':
+        i_pause = 0
+    else:
+        i_pause = int(i_pause)
 
     start = time.time()
     register(10, link)  # 10 jumlah max attempt
